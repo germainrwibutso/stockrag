@@ -1,0 +1,5 @@
+{
+  "name": "Stock Data Dashboard",
+  "description": "A dashboard to visualize stock price data from a CSV file.",
+  "requestFramePermissions": []
+}
