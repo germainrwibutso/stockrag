@@ -1,15 +1,17 @@
 import React, { useMemo } from 'react';
+import { Observation } from '../../types';
 
 interface SemanticsTableProps {
-  tkgData: any[];
-  semanticsData: Record<string, string>;
+  tkgData: Observation[];
+  semanticsData: Record<string, Record<string, string>>;
+  activeCategory: string;
   onRowClick: (dataIndex: number) => void;
 }
 
-const SemanticsTable: React.FC<SemanticsTableProps> = ({ tkgData, semanticsData, onRowClick }) => {
+const SemanticsTable: React.FC<SemanticsTableProps> = ({ tkgData, semanticsData, activeCategory, onRowClick }) => {
   const filteredTkgData = useMemo(() => {
-    return tkgData.filter(d => semanticsData[d.id]);
-  }, [tkgData, semanticsData]);
+    return tkgData.filter(d => semanticsData[d.id]?.[activeCategory]);
+  }, [tkgData, semanticsData, activeCategory]);
 
   const sortedFilteredData = useMemo(() => {
     return [...filteredTkgData].sort((a, b) => new Date(a.date).getTime() - new Date(b.date).getTime());
@@ -41,7 +43,7 @@ const SemanticsTable: React.FC<SemanticsTableProps> = ({ tkgData, semanticsData,
                 <td className="py-3 px-4 text-sm font-medium text-zinc-900 group-hover:text-indigo-600 transition-colors">{d.date}</td>
                 <td className="py-3 px-4 text-sm text-zinc-600">
                   <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-50 text-indigo-700 border border-indigo-100">
-                    {semanticsData[d.id]}
+                    {semanticsData[d.id][activeCategory]}
                   </span>
                 </td>
               </tr>
